@@ -1,0 +1,129 @@
+1. activity 23 张表的相关信息
+
+--流程部署相关表信息
+
+select * from ACT_RE_DEPLOYMENT;  --查看流程部署信息
+
+select * from ACT_RE_PROCDEF;     --查看流程实例信息
+
+select * from ACT_GE_BYTEARRAY;   --资源文件路径信息
+
+select * from ACT_GE_PROPERTY     --主键生成的策略信息
+
+
+
+--流程实例，执行对象，任务
+
+select * from ACT_RU_EXECUTION;    --正在执行的流程信息
+
+select * from ACT_RU_TASK;         --正在执行的任务信息
+
+select * from ACT_HI_TASKINST;    --流程任务历史信息
+
+select * from ACT_HI_ACTINST;      --所有活动节点历史信息
+
+--流程变量
+select * from ACT_RU_VARIABLE      --正在执行的流程变量表
+
+select * from ACT_HI_VARIABLE      --历史流程变量信息表
+
+
+select * from ACT_GE_BYTEARRAY;     --资源文件信息
+select * from ACT_GE_PROPERTY;      --流程部署Id生成策略
+
+--组任务
+select * from ru_identitylink
+
+select * from hi_identitylink;
+
+--用户角色相关信息表
+
+select * from act_id_group 角色表
+select * from act_id_user  用户表
+select * from act_id_member 用户角色关联表
+
+
+
+2. 设置流程变量信息
+
+    RuntimeService
+    TaskService
+    使用javabean设置流程变量，javabean必须实现序列化信息
+
+    变量的传递可以是在启动实例和完成任务时候
+
+
+
+3. activity加载的文件信息是.bpmn的格式信息数据
+
+4. 有分支连线的流程图设计
+    连线
+    4.1 在连线上设置分支条件信息#{message=='不重要'} boolean表达式结构信息内容
+    4.2 启动流程实例信息 使用key启动使用的最新版本
+    4.3 完成任务的同时，设置流程变量。完成任务的同时设置流程变量信息map的简直键值对与设置的条件信息保持一直。
+
+5. 排他网关的实现
+    设置默认执行流程信息
+
+
+6. 并行网关
+    1. 执行对象和流程实例不一致。一个流程实例，两个执行对象，
+    2. 细化平行网关的执行流程信息
+    3. 并行网关的活动节点的增加，主要是由于并行聚合改节点执行多次
+    4. 并行网管不会解析条件。先分支再聚合
+
+7. 开始与结束节点
+    根据流程实例对象判断是否到结束节点
+    可以根据历史表查询到相关的信息。
+
+8. 自定义流程实例信息
+
+    receiveTask执行到该流程处于等待状态信息
+    //查询执行对象Id getRuntimeService.createExecutionQuery  //使用流程实例Id信息
+    //使用流程变量设置
+    自定义流程设计；都需要自己手动向后执行
+
+9. 个人任务存在三种制定方式
+
+
+10. 组任务 select * from act_hi_identitylink任务
+
+
+        select * from act_hi _identitylink
+        组任务的查询：taskCandiadte();//此时办理人信息是问空信息
+        组任务的办理人是list集合信息。根据任务Id从查询
+        将组任务分配给个人任务信息
+        拾取任务信息：
+        组任务--->个人任务  组任务信息表数据没有变化信息
+        getTaskService().claim(taskId,UserId);将某个人任务给userID的人员
+
+        个人任务-->组任务信息。。之前必须是一个组任务
+
+        userId = null;即转换成组任务
+
+        组任务成员可以添加成员或者删除成员信息
+
+        删除组任务程成员后。查找组任务的候选人信息。没有执行者的具体信息
+
+        任务的完成信息全部是针对组任务转成个人任务的操作信息
+
+11. 角色组的概念信息 --本质上是组任务信息
+
+        //添加用户角色
+        getIndetityService();
+        //创建角色
+        saveGroup(new GroupEntity(""));
+        //创建用户
+        saveUser(new UserEntity(""));
+        //建立用户和角色的关联关系
+        createMembership("","");
+
+
+
+        总结：控制流程的执行
+
+
+
+
+
+
